@@ -1,0 +1,13 @@
+{
+  "name": "greenbin-connect",
+  "version": "1.0.0",
+  "description": "AI-powered waste reporting platform for Sierra Leone",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "build": "echo 'Static site - no build required'"
+  },
+  "keywords": ["waste", "reporting", "AI", "Sierra Leone"],
+  "author": "AfrikSpark Tech Solutions",
+  "license": "MIT"
+}
