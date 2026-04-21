@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GreenBin Connect — Report. Protect. Transform.</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --g1: #0d2b1a;
+    --g2: #1a4a2e;
+    --g3: #2d6a4f;
+    --g4: #40916c;
+    --g5: #52b788;
+    --g6: #74c69d;
+    --g7: #b7e4c7;
+    --g8: #d8f3dc;
+    --amber: #f4a261;
+    --red: #e63946;
+    --cream: #f9f6f0;
+    --white: #ffffff;
+    --text-dark: #0d2b1a;
+    --text-mid: #2d6a4f;
+    --text-muted: #5a8a72;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2.5rem;
+    background: rgba(249,246,240,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(64,145,108,0.12);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logo img {
+    height: 38px;
+    width: auto;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-mid);
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--g4); }
+
+  .nav-cta {
+    background: var(--g3);
+    color: white !important;
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--g4) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(82,183,136,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 10% 80%, rgba(45,106,79,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 90% 70%, rgba(116,198,157,0.1) 0%, transparent 60%);
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(64,145,108,0.1);
+    border: 1px solid rgba(64,145,108,0.25);
+    color: var(--g3);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .badge-dot {
+    width: 6px; height: 6px;
+    background: var(--g5);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
+
+  .hero-logo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.7s ease 0.1s both;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--g1);
+    max-width: 800px;
+    animation: fadeUp 0.7s ease 0.2s both;
+  }
+
+  .hero h1 span {
+    color: var(--g4);
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 300;
+    color: var(--text-muted);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-top: 1.25rem;
+    animation: fadeUp 0.7s ease 0.3s both;
+  }
+
+  .hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2.5rem;
+    animation: fadeUp 0.7s ease 0.4s both;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--g2);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 100px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 4px 24px rgba(26,74,46,0.25);
+  }
+
+  .btn-primary:hover {
+    background: var(--g3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(26,74,46,0.3);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    color: var(--g2);
+    padding: 15px 30px;
+    border-radius: 100px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1.5px solid rgba(45,106,79,0.2);
+    transition: all 0.25s;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--g4);
+    background: var(--g8);
+    transform: translateY(-2px);
+  }
+
+  .btn-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .coming-soon-tag {
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--amber);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 100px;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    margin-top: 3.5rem;
+    animation: fadeUp 0.7s ease 0.5s both;
+  }
+
+  .hero-stat {
+    text-align: center;
+  }
+
+  .hero-stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--g3);
+  }
+
+  .hero-stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    font-weight: 400;
+  }
+
+  .hero-stat-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(45,106,79,0.15);
+    align-self: center;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SCROLL INDICATOR */
+  .scroll-hint {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 12px;
+    animation: fadeUp 0.7s ease 0.7s both;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--g5), transparent);
+    animation: scrollAnim 1.5s ease-in-out infinite;
+  }
+
+  @keyframes scrollAnim {
+    0%, 100% { opacity: 1; transform: scaleY(1); }
+    50% { opacity: 0.4; transform: scaleY(0.6); }
+  }
+
+  /* SECTION STYLES */
+  section { padding: 5rem 2rem; }
+
+  .section-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--g4);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: var(--g1);
+    line-height: 1.15;
+  }
+
+  .section-sub {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 520px;
+    margin-top: 0.75rem;
+  }
+
+  /* PROBLEM SECTION */
+  .problem {
+    background: var(--g1);
+    color: white;
+  }
+
+  .problem-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .problem .section-label { color: var(--g6); }
+  .problem .section-title { color: white; }
+  .problem .section-sub { color: rgba(255,255,255,0.6); max-width: 100%; }
+
+  .problem-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .problem-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: background 0.2s;
+  }
+
+  .problem-card:hover { background: rgba(255,255,255,0.08); }
+
+  .problem-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .icon-red { background: rgba(230,57,70,0.15); }
+  .icon-amber { background: rgba(244,162,97,0.15); }
+  .icon-green { background: rgba(82,183,136,0.15); }
+
+  .problem-card h4 {
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 4px;
+  }
+
+  .problem-card p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.5;
+  }
+
+  /* HOW IT WORKS */
+  .how {
+    background: var(--cream);
+  }
+
+  .how-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .step {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    text-align: left;
+    border: 1px solid rgba(45,106,79,0.08);
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .step:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(26,74,46,0.1);
+  }
+
+  .step-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--g8);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .step-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .step h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--g1);
+    margin-bottom: 0.5rem;
+  }
+
+  .step p {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* FEATURES */
+  .features {
+    background: white;
+  }
+
+  .features-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 12px;
+    transition: background 0.2s;
+    cursor: default;
+  }
+
+  .feature-item:hover { background: var(--g8); }
+
+  .feature-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--g8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .feature-item h4 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--g1);
+    margin-bottom: 3px;
+  }
+
+  .feature-item p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .phone-mockup {
+    background: var(--g1);
+    border-radius: 32px;
+    padding: 2rem;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(13,43,26,0.3);
+  }
+
+  .phone-mockup::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(82,183,136,0.2), transparent 70%);
+  }
+
+  .phone-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .phone-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  .phone-badge {
+    background: rgba(82,183,136,0.2);
+    color: var(--g6);
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+
+  .report-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 1rem;
+  }
+
+  .report-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .risk-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .risk-high { background: var(--red); }
+  .risk-med { background: var(--amber); }
+  .risk-low { background: var(--g5); }
+
+  .report-card-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: white;
+  }
+
+  .report-card-meta {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    display: flex;
+    gap: 10px;
+  }
+
+  .report-status {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+
+  .status-pending { background: rgba(244,162,97,0.2); color: var(--amber); }
+  .status-resolved { background: rgba(82,183,136,0.2); color: var(--g6); }
+  .status-critical { background: rgba(230,57,70,0.2); color: #ff6b7a; }
+
+  .ai-box {
+    background: rgba(82,183,136,0.1);
+    border: 1px solid rgba(82,183,136,0.2);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ai-box-text {
+    font-size: 12px;
+    color: var(--g6);
+  }
+
+  /* IMPACT */
+  .impact {
+    background: var(--g8);
+  }
+
+  .impact-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .impact-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem 1.25rem;
+    border: 1px solid rgba(45,106,79,0.1);
+    transition: transform 0.2s;
+  }
+
+  .impact-card:hover { transform: translateY(-3px); }
+
+  .impact-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--g3);
+  }
+
+  .impact-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  /* PARTNERS */
+  .partners {
+    background: white;
+    padding: 3.5rem 2rem;
+  }
+
+  .partners-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .partners-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .partners-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .partner-pill {
+    background: var(--g8);
+    border: 1px solid rgba(45,106,79,0.12);
+    color: var(--g2);
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  /* DOWNLOAD CTA */
+  .download {
+    background: var(--g1);
+    color: white;
+    text-align: center;
+  }
+
+  .download-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .download .section-label { color: var(--g6); }
+
+  .download h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: white;
+    margin-bottom: 1rem;
+  }
+
+  .download p {
+    color: rgba(255,255,255,0.55);
+    font-size: 1rem;
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+  }
+
+  .download-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .btn-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 28px;
+    border-radius: 16px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    transition: all 0.25s;
+  }
+
+  .btn-apk {
+    background: var(--g4);
+    color: white;
+    box-shadow: 0 4px 24px rgba(64,145,108,0.3);
+  }
+
+  .btn-apk:hover {
+    background: var(--g5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(64,145,108,0.4);
+  }
+
+  .btn-play {
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.12);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  .btn-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .btn-text-block {
+    text-align: left;
+  }
+
+  .btn-text-small {
+    font-size: 10px;
+    opacity: 0.7;
+    display: block;
+    font-weight: 400;
+  }
+
+  .btn-text-main {
+    font-size: 15px;
+    font-weight: 600;
+    display: block;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--g1);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer-logo img { height: 30px; }
+
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-links a {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--g6); }
+
+  .afrikspark-credit {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+  }
+
+  .afrikspark-credit a {
+    color: var(--g6);
+    text-decoration: none;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { display: none; }
+    .problem-inner, .features-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-stat-divider { display: none; }
+    .footer-inner { flex-direction: column; text-align: center; }
+    .phone-mockup { min-height: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <img src="GreenBin Connect Logo.jpeg" alt="GreenBin Connect">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#impact">Impact</a></li>
+    <li><a href="#download" class="nav-cta">Download App</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge">
+    <span class="badge-dot"></span>
+    Coming Soon to Freetown, Sierra Leone
+  </div>
+  <img src="GreenBin Connect Logo.jpeg" alt="GreenBin Connect Logo" class="hero-logo">
+  <h1>Report Waste.<br><span>Protect</span> Your Community.</h1>
+  <p class="hero-sub">GreenBin Connect is an AI-powered platform that lets citizens report waste hazards in real time — by photo, voice, or text — so authorities can respond faster and communities stay healthier.</p>
+  <div class="hero-buttons">
+    <a href="#" class="btn-primary btn-disabled">
+      <span>⬇</span> Download APK <span class="coming-soon-tag">Coming Soon</span>
+    </a>
+    <a href="#" class="btn-secondary btn-disabled">
+      <span>▶</span> Google Play <span class="coming-soon-tag">Coming Soon</span>
+    </a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">AI</div>
+      <div class="hero-stat-label">Waste Classification</div>
+    </div>
+    <div class="hero-stat-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">3</div>
+      <div class="hero-stat-label">Ways to Report</div>
+    </div>
+    <div class="hero-stat-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">Real‑Time</div>
+      <div class="hero-stat-label">GPS Verification</div>
+    </div>
+    <div class="hero-stat-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">Free</div>
+      <div class="hero-stat-label">Open Source</div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll to explore</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="problem-inner">
+    <div>
+      <span class="section-label">The Problem</span>
+      <h2 class="section-title">Unmanaged waste is a silent emergency</h2>
+      <p class="section-sub" style="margin-top:1rem;">In Sierra Leone, waste blocks drains, causes flooding, and breeds disease — yet communities have no way to report hazards or track whether anyone responds.</p>
+    </div>
+    <div class="problem-cards">
+      <div class="problem-card">
+        <div class="problem-icon icon-red">🦟</div>
+        <div>
+          <h4>Cholera & Malaria outbreaks</h4>
+          <p>Stagnant waste creates breeding grounds for mosquitoes and bacteria, disproportionately harming children under five.</p>
+        </div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon icon-amber">🌊</div>
+        <div>
+          <h4>Flooding from blocked drains</h4>
+          <p>Accumulated waste in drainage channels causes severe flooding during rainy season, destroying homes and livelihoods.</p>
+        </div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon icon-green">📡</div>
+        <div>
+          <h4>No reporting infrastructure</h4>
+          <p>Authorities lack real-time data to identify hazard zones or coordinate timely responses. Citizens have no voice.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <span class="section-label">How It Works</span>
+    <h2 class="section-title">Simple for citizens.<br>Powerful for authorities.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-icon">📸</div>
+        <h3>Snap, speak, or type</h3>
+        <p>Report a waste hazard using a photo, voice note, or text. No digital skills required — designed for everyone.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-icon">🤖</div>
+        <h3>AI analyzes the hazard</h3>
+        <p>On-device AI classifies the waste type and assigns a risk level — low, medium, high, or critical — instantly.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-icon">📍</div>
+        <h3>Location is verified</h3>
+        <p>GPS and timestamp automatically confirm where and when the report was made. No fakes. No guesswork.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-icon">🚨</div>
+        <h3>Authorities are alerted</h3>
+        <p>Waste operators and local authorities see reports on a live dashboard and can dispatch response teams fast.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-inner">
+    <div>
+      <span class="section-label">Features</span>
+      <h2 class="section-title">Built for real communities</h2>
+      <p class="section-sub">Every feature is designed around the realities of urban Sierra Leone — low bandwidth, mixed literacy, high community motivation.</p>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-dot">🎙️</div>
+          <div>
+            <h4>Voice reporting</h4>
+            <p>Record a voice note to report — ideal for users who cannot read or type.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-dot">🧠</div>
+          <div>
+            <h4>On-device AI classification</h4>
+            <p>TensorFlow.js analyzes waste photos without needing strong internet connectivity.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-dot">🗺️</div>
+          <div>
+            <h4>Live risk map</h4>
+            <p>Color-coded map shows all active reports. Green = safe. Red = critical. Always current.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-dot">🔔</div>
+          <div>
+            <h4>Status updates</h4>
+            <p>Citizens receive notifications when their report is reviewed or resolved by authorities.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-dot">🔓</div>
+          <div>
+            <h4>Fully open source</h4>
+            <p>Core code is publicly available on GitHub for transparency and global replication.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-mockup">
+      <div class="phone-header">
+        <div class="phone-title">GreenBin Connect</span>
+        <span class="phone-badge">Coming Soon</span>
+      </div>
+      <div class="report-card">
+        <div class="report-card-header">
+          <div class="risk-dot risk-high"></div>
+          <span class="report-card-title">Blocked drain — Congo Town</span>
+        </div>
+        <div class="report-card-meta">
+          <span>📍 2.3km away</span>
+          <span>12 min ago</span>
+          <span class="report-status status-critical">Critical</span>
+        </div>
+      </div>
+      <div class="report-card">
+        <div class="report-card-header">
+          <div class="risk-dot risk-med"></div>
+          <span class="report-card-title">Plastic waste — Aberdeen</span>
+        </div>
+        <div class="report-card-meta">
+          <span>📍 0.8km away</span>
+          <span>1 hr ago</span>
+          <span class="report-status status-pending">Pending</span>
+        </div>
+      </div>
+      <div class="report-card">
+        <div class="report-card-header">
+          <div class="risk-dot risk-low"></div>
+          <span class="report-card-title">Organic waste — Lumley</span>
+        </div>
+        <div class="report-card-meta">
+          <span>📍 4.1km away</span>
+          <span>3 hr ago</span>
+          <span class="report-status status-resolved">Resolved ✓</span>
+        </div>
+      </div>
+      <div class="ai-box">
+        <span style="font-size:18px;">🤖</span>
+        <span class="ai-box-text">AI detected: Plastic waste — Medium risk. Tap to confirm or edit.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section class="impact" id="impact">
+  <div class="impact-inner">
+    <span class="section-label">Our Goal</span>
+    <h2 class="section-title">Built to scale across Africa</h2>
+    <p class="section-sub" style="margin: 0.75rem auto 0; max-width: 500px;">Starting in Freetown, expanding to Bo and Kenema — and designed from day one for replication across UNICEF programme countries.</p>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="impact-num">2,000+</div>
+        <div class="impact-label">Active users targeted in year one</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">5,000+</div>
+        <div class="impact-label">Waste reports to be processed</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">3</div>
+        <div class="impact-label">Cities: Freetown, Bo, Kenema</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">Children</div>
+        <div class="impact-label">Primary beneficiaries of safer communities</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<section class="partners">
+  <div class="partners-inner">
+    <p class="partners-label">Partners & Supporters</p>
+    <div class="partners-row">
+      <span class="partner-pill">🌿 Freetown Innovations Lab</span>
+      <span class="partner-pill">♻️ Recycle Company</span>
+      <span class="partner-pill">🏢 Bo Innovation Hub</span>
+      <span class="partner-pill">🤝 Coalition for Community Resilience</span>
+      <span class="partner-pill">🌍 Magamba Network</span>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD CTA -->
+<section class="download" id="download">
+  <div class="download-inner">
+    <span class="section-label">Get the App</span>
+    <h2>Join the movement<br>when we launch</h2>
+    <p>GreenBin Connect is coming soon. Join the waitlist to be the first to protect your community in Sierra Leone.</p>
+    <div class="download-buttons">
+      <div class="btn-download btn-apk btn-disabled">
+        <div class="btn-icon">⬇</div>
+        <div class="btn-text-block">
+          <span class="btn-text-small">Coming Soon</span>
+          <span class="btn-text-main">Download APK</span>
+        </div>
+      </div>
+      <div class="btn-download btn-play">
+        <div class="btn-icon">▶</div>
+        <div class="btn-text-block">
+          <span class="btn-text-small">Coming Soon</span>
+          <span class="btn-text-main">Google Play</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <img src="GreenBin Connect Logo.jpeg" alt="GreenBin Connect">
+    </div>
+    <p class="afrikspark-credit">A project by <a href="https://afrikspark.tech" target="_blank">AfrikSpark Tech Solutions</a></p>
+    <div class="footer-links">
+      <a href="https://github.com/Mafaxson/greenbin-connect" target="_blank">GitHub</a>
+      <a href="mailto:info@afrikspark.tech">Contact</a>
+      <a href="https://afrikspark.tech" target="_blank">AfrikSpark</a>
+    </div>
+  </div>
+  <p class="footer-copy" style="margin-top:1.5rem;">© 2026 GreenBin Connect — AfrikSpark Tech Solutions. Open Source under MIT License.</p>
+</footer>
+
+</body>
+</html>
