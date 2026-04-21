@@ -3,9 +3,24 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { motion } from 'framer-motion'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-const supabase = createClient(supabaseUrl, supabaseKey)
+const getSupabaseClient = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseKey) {
+    return null
+  }
+
+  return createClient(supabaseUrl, supabaseKey)
+}
+
+export const dynamic = 'force-dynamic'
+
+export async function getServerSideProps() {
+  return {
+    props: {},
+  }
+}
 
 export default function Home() {
   const [heroImages, setHeroImages] = useState([])
@@ -24,6 +39,8 @@ export default function Home() {
   })
   const [submitStatus, setSubmitStatus] = useState('')
 
+  const supabase = getSupabaseClient()
+
   useEffect(() => {
     fetchHeroImages()
     fetchPartners()
@@ -31,55 +48,79 @@ export default function Home() {
   }, [])
 
   const fetchHeroImages = async () => {
-    const { data, error } = await supabase
-      .from('hero_images')
-      .select('*')
-      .eq('active', true)
-      .order('sort_order')
-    if (!error) setHeroImages(data || [])
+    if (!supabase) return
+    try {
+      const { data, error } = await supabase
+        .from('hero_images')
+        .select('*')
+        .eq('active', true)
+        .order('sort_order')
+      if (!error) setHeroImages(data || [])
+    } catch (err) {
+      console.warn('Failed to fetch hero images:', err)
+    }
   }
 
   const fetchPartners = async () => {
-    const { data, error } = await supabase
-      .from('partners')
-      .select('*')
-      .eq('active', true)
-      .order('name')
-    if (!error) setPartners(data || [])
+    if (!supabase) return
+    try {
+      const { data, error } = await supabase
+        .from('partners')
+        .select('*')
+        .eq('active', true)
+        .order('name')
+      if (!error) setPartners(data || [])
+    } catch (err) {
+      console.warn('Failed to fetch partners:', err)
+    }
   }
 
   const fetchFaqs = async () => {
-    const { data, error } = await supabase
-      .from('faqs')
-      .select('*')
-      .eq('active', true)
-      .order('sort_order')
-    if (!error) setFaqs(data || [])
+    if (!supabase) return
+    try {
+      const { data, error } = await supabase
+        .from('faqs')
+        .select('*')
+        .eq('active', true)
+        .order('sort_order')
+      if (!error) setFaqs(data || [])
+    } catch (err) {
+      console.warn('Failed to fetch FAQs:', err)
+    }
   }
 
   const handleWaitlistSubmit = async (e) => {
     e.preventDefault()
     setSubmitStatus('Submitting...')
 
-    const { error } = await supabase
-      .from('waitlist_submissions')
-      .insert([waitlistForm])
+    if (!supabase) {
+      setSubmitStatus('Service temporarily unavailable. Please try again later.')
+      return
+    }
 
-    if (error) {
+    try {
+      const { error } = await supabase
+        .from('waitlist_submissions')
+        .insert([waitlistForm])
+
+      if (error) {
+        setSubmitStatus('Error submitting. Please try again.')
+      } else {
+        setSubmitStatus('Thank you! You\'ve been added to the waitlist.')
+        setWaitlistForm({
+          full_name: '',
+          phone: '',
+          email: '',
+          user_type: '',
+          area: '',
+          bins_needed: '',
+          service_interest: '',
+          notes: ''
+        })
+        setTimeout(() => setShowWaitlistModal(false), 2000)
+      }
+    } catch (err) {
       setSubmitStatus('Error submitting. Please try again.')
-    } else {
-      setSubmitStatus('Thank you! You\'ve been added to the waitlist.')
-      setWaitlistForm({
-        full_name: '',
-        phone: '',
-        email: '',
-        user_type: '',
-        area: '',
-        bins_needed: '',
-        service_interest: '',
-        notes: ''
-      })
-      setTimeout(() => setShowWaitlistModal(false), 2000)
     }
   }
 

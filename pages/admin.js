@@ -1,9 +1,25 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-const supabase = createClient(supabaseUrl, supabaseKey)
+const getSupabaseClient = () => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseKey) {
+    console.warn('Supabase environment variables not configured')
+    return null
+  }
+
+  return createClient(supabaseUrl, supabaseKey)
+}
+
+export const dynamic = 'force-dynamic'
+
+export async function getServerSideProps() {
+  return {
+    props: {},
+  }
+}
 
 export default function Admin() {
   const [heroImages, setHeroImages] = useState([])
@@ -11,8 +27,16 @@ export default function Admin() {
   const [faqs, setFaqs] = useState([])
   const [waitlist, setWaitlist] = useState([])
   const [activeTab, setActiveTab] = useState('hero')
+  const [error, setError] = useState('')
+
+  const supabase = getSupabaseClient()
 
   useEffect(() => {
+    if (!supabase) {
+      setError('Supabase not configured. Please check environment variables.')
+      return
+    }
+
     if (activeTab === 'hero') fetchHeroImages()
     else if (activeTab === 'partners') fetchPartners()
     else if (activeTab === 'faqs') fetchFaqs()
@@ -20,35 +44,59 @@ export default function Admin() {
   }, [activeTab])
 
   const fetchHeroImages = async () => {
-    const { data, error } = await supabase
-      .from('hero_images')
-      .select('*')
-      .order('sort_order')
-    if (!error) setHeroImages(data || [])
+    if (!supabase) return
+    try {
+      const { data, error } = await supabase
+        .from('hero_images')
+        .select('*')
+        .order('sort_order')
+      if (error) throw error
+      setHeroImages(data || [])
+    } catch (err) {
+      setError('Failed to fetch hero images: ' + err.message)
+    }
   }
 
   const fetchPartners = async () => {
-    const { data, error } = await supabase
-      .from('partners')
-      .select('*')
-      .order('name')
-    if (!error) setPartners(data || [])
+    if (!supabase) return
+    try {
+      const { data, error } = await supabase
+        .from('partners')
+        .select('*')
+        .order('name')
+      if (error) throw error
+      setPartners(data || [])
+    } catch (err) {
+      setError('Failed to fetch partners: ' + err.message)
+    }
   }
 
   const fetchFaqs = async () => {
-    const { data, error } = await supabase
-      .from('faqs')
-      .select('*')
-      .order('sort_order')
-    if (!error) setFaqs(data || [])
+    if (!supabase) return
+    try {
+      const { data, error } = await supabase
+        .from('faqs')
+        .select('*')
+        .order('sort_order')
+      if (error) throw error
+      setFaqs(data || [])
+    } catch (err) {
+      setError('Failed to fetch FAQs: ' + err.message)
+    }
   }
 
   const fetchWaitlist = async () => {
-    const { data, error } = await supabase
-      .from('waitlist_submissions')
-      .select('*')
-      .order('created_at', { ascending: false })
-    if (!error) setWaitlist(data || [])
+    if (!supabase) return
+    try {
+      const { data, error } = await supabase
+        .from('waitlist_submissions')
+        .select('*')
+        .order('created_at', { ascending: false })
+      if (error) throw error
+      setWaitlist(data || [])
+    } catch (err) {
+      setError('Failed to fetch waitlist: ' + err.message)
+    }
   }
 
   const exportCSV = () => {
@@ -76,36 +124,61 @@ export default function Admin() {
   }
 
   const toggleActive = async (table, id, currentActive) => {
-    const { error } = await supabase
-      .from(table)
-      .update({ active: !currentActive })
-      .eq('id', id)
+    if (!supabase) return
+    try {
+      const { error } = await supabase
+        .from(table)
+        .update({ active: !currentActive })
+        .eq('id', id)
 
-    if (!error) {
+      if (error) throw error
+
+      // Refresh data
       if (table === 'hero_images') fetchHeroImages()
       else if (table === 'partners') fetchPartners()
       else if (table === 'faqs') fetchFaqs()
+    } catch (err) {
+      setError('Failed to update item: ' + err.message)
     }
   }
 
   const deleteItem = async (table, id) => {
+    if (!supabase) return
     if (!confirm('Are you sure you want to delete this item?')) return
 
-    const { error } = await supabase
-      .from(table)
-      .delete()
-      .eq('id', id)
+    try {
+      const { error } = await supabase
+        .from(table)
+        .delete()
+        .eq('id', id)
 
-    if (!error) {
+      if (error) throw error
+
+      // Refresh data
       if (table === 'hero_images') fetchHeroImages()
       else if (table === 'partners') fetchPartners()
       else if (table === 'faqs') fetchFaqs()
+    } catch (err) {
+      setError('Failed to delete item: ' + err.message)
     }
   }
 
   return (
     <div style={{ padding: '2rem', fontFamily: 'DM Sans, sans-serif' }}>
       <h1 style={{ fontSize: '2rem', marginBottom: '2rem', color: '#0d2b1a' }}>GreenBin Connect Admin</h1>
+
+      {error && (
+        <div style={{
+          background: '#fee',
+          color: '#c33',
+          padding: '1rem',
+          borderRadius: '4px',
+          marginBottom: '2rem',
+          border: '1px solid #fcc'
+        }}>
+          {error}
+        </div>
+      )}
 
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', borderBottom: '1px solid #e0e0e0', paddingBottom: '1rem' }}>
         {['hero', 'partners', 'faqs', 'waitlist'].map(tab => (
