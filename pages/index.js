@@ -1,7 +1,8 @@
 import Head from 'next/head'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 const getSupabaseClient = () => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -42,13 +43,7 @@ export default function Home() {
 
   const supabase = getSupabaseClient()
 
-  useEffect(() => {
-    fetchHeroImages()
-    fetchPartners()
-    fetchFaqs()
-  }, [])
-
-  const fetchHeroImages = async () => {
+  const fetchHeroImages = useCallback(async () => {
     if (!supabase) return
     try {
       const { data, error } = await supabase
@@ -60,9 +55,9 @@ export default function Home() {
     } catch (err) {
       console.warn('Failed to fetch hero images:', err)
     }
-  }
+  }, [supabase])
 
-  const fetchPartners = async () => {
+  const fetchPartners = useCallback(async () => {
     if (!supabase) return
     try {
       const { data, error } = await supabase
@@ -74,9 +69,9 @@ export default function Home() {
     } catch (err) {
       console.warn('Failed to fetch partners:', err)
     }
-  }
+  }, [supabase])
 
-  const fetchFaqs = async () => {
+  const fetchFaqs = useCallback(async () => {
     if (!supabase) return
     try {
       const { data, error } = await supabase
@@ -88,7 +83,13 @@ export default function Home() {
     } catch (err) {
       console.warn('Failed to fetch FAQs:', err)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    fetchHeroImages()
+    fetchPartners()
+    fetchFaqs()
+  }, [fetchHeroImages, fetchPartners, fetchFaqs])
 
   const handleWaitlistSubmit = async (e) => {
     e.preventDefault()
@@ -139,14 +140,13 @@ export default function Home() {
         <meta name="twitter:description" content="AI-powered waste reporting platform for Sierra Leone. Citizens report hazards via photo, voice, or text. AI analyzes risk levels and alerts authorities." />
         <meta name="twitter:image" content="https://greenbin.afrikspark.tech/GreenBin_Connect_Logo-removebg-preview.png" />
         <link rel="icon" type="image/png" href="GreenBin_Connect_Logo-removebg-preview.png" />
-        <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
       </Head>
 
       <div className="app">
         {/* NAV */}
         <nav>
           <a className="nav-logo" href="#">
-            <img src="GreenBin_Connect_Logo-removebg-preview.png" alt="GreenBin Connect" />
+            <Image src="GreenBin_Connect_Logo-removebg-preview.png" alt="GreenBin Connect" width={36} height={36} />
           </a>
           <ul className="nav-links">
             <li><a href="#how">How it works</a></li>
@@ -163,7 +163,7 @@ export default function Home() {
             <span className="badge-dot"></span>
             Coming Soon to Freetown, Sierra Leone
           </div>
-          <img src="GreenBin_Connect_Logo-removebg-preview.png" alt="GreenBin Connect Logo" className="hero-logo" />
+          <Image src="GreenBin_Connect_Logo-removebg-preview.png" alt="GreenBin Connect Logo" width={90} height={90} className="hero-logo" />
 
           {/* Hero Image Slider */}
           {heroImages.length > 0 && (
@@ -183,10 +183,12 @@ export default function Home() {
                 }}
               >
                 {[...heroImages, ...heroImages].map((image, index) => (
-                  <img
+                  <Image
                     key={index}
                     src={image.image_url}
                     alt="Hero"
+                    width={400}
+                    height={300}
                     className="slider-image"
                   />
                 ))}
@@ -430,7 +432,7 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="partner-card"
                 >
-                  <img src={partner.logo_url} alt={partner.name} className="partner-logo" />
+                  <Image src={partner.logo_url} alt={partner.name} width={100} height={60} className="partner-logo" />
                   <h4>{partner.name}</h4>
                   {partner.description && <p>{partner.description}</p>}
                 </a>
@@ -473,7 +475,7 @@ export default function Home() {
         <footer>
           <div className="footer-inner">
             <div className="footer-logo">
-              <img src="GreenBin_Connect_Logo-removebg-preview.png" alt="GreenBin Connect" />
+              <Image src="GreenBin_Connect_Logo-removebg-preview.png" alt="GreenBin Connect" width={28} height={28} />
             </div>
             <p className="afrikspark-credit">A project by <a href="https://afrikspark.tech" target="_blank">AfrikSpark Tech Solutions</a></p>
             <div className="footer-links">

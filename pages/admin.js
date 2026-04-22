@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@supabase/supabase-js'
+import Image from 'next/image'
 
 const getSupabaseClient = () => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -32,19 +33,7 @@ export default function Admin() {
 
   const supabase = getSupabaseClient()
 
-  useEffect(() => {
-    if (!supabase) {
-      setError('Supabase not configured. Please check environment variables.')
-      return
-    }
-
-    if (activeTab === 'hero') fetchHeroImages()
-    else if (activeTab === 'partners') fetchPartners()
-    else if (activeTab === 'faqs') fetchFaqs()
-    else if (activeTab === 'waitlist') fetchWaitlist()
-  }, [activeTab])
-
-  const fetchHeroImages = async () => {
+  const fetchHeroImages = useCallback(async () => {
     if (!supabase) return
     try {
       const { data, error } = await supabase
@@ -56,9 +45,9 @@ export default function Admin() {
     } catch (err) {
       setError('Failed to fetch hero images: ' + err.message)
     }
-  }
+  }, [supabase])
 
-  const fetchPartners = async () => {
+  const fetchPartners = useCallback(async () => {
     if (!supabase) return
     try {
       const { data, error } = await supabase
@@ -70,9 +59,9 @@ export default function Admin() {
     } catch (err) {
       setError('Failed to fetch partners: ' + err.message)
     }
-  }
+  }, [supabase])
 
-  const fetchFaqs = async () => {
+  const fetchFaqs = useCallback(async () => {
     if (!supabase) return
     try {
       const { data, error } = await supabase
@@ -84,9 +73,9 @@ export default function Admin() {
     } catch (err) {
       setError('Failed to fetch FAQs: ' + err.message)
     }
-  }
+  }, [supabase])
 
-  const fetchWaitlist = async () => {
+  const fetchWaitlist = useCallback(async () => {
     if (!supabase) return
     try {
       const { data, error } = await supabase
@@ -98,7 +87,19 @@ export default function Admin() {
     } catch (err) {
       setError('Failed to fetch waitlist: ' + err.message)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    if (!supabase) {
+      setError('Supabase not configured. Please check environment variables.')
+      return
+    }
+
+    if (activeTab === 'hero') fetchHeroImages()
+    else if (activeTab === 'partners') fetchPartners()
+    else if (activeTab === 'faqs') fetchFaqs()
+    else if (activeTab === 'waitlist') fetchWaitlist()
+  }, [activeTab, fetchHeroImages, fetchPartners, fetchFaqs, fetchWaitlist, supabase])
 
   const exportCSV = () => {
     const csv = [
@@ -207,7 +208,7 @@ export default function Admin() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
             {heroImages.map(image => (
               <div key={image.id} style={{ border: '1px solid #ddd', padding: '1rem', borderRadius: '8px' }}>
-                <img src={image.image_url} alt="Hero" style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '4px' }} />
+                <Image src={image.image_url} alt="Hero" width={200} height={150} style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '4px' }} />
                 <div style={{ marginTop: '0.5rem' }}>
                   <button onClick={() => toggleActive('hero_images', image.id, image.active)}>
                     {image.active ? 'Deactivate' : 'Activate'}
@@ -228,7 +229,7 @@ export default function Admin() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
             {partners.map(partner => (
               <div key={partner.id} style={{ border: '1px solid #ddd', padding: '1rem', borderRadius: '8px' }}>
-                <img src={partner.logo_url} alt={partner.name} style={{ width: '100%', height: '60px', objectFit: 'contain' }} />
+                <Image src={partner.logo_url} alt={partner.name} width={250} height={60} style={{ width: '100%', height: '60px', objectFit: 'contain' }} />
                 <h3>{partner.name}</h3>
                 <p>{partner.website_url}</p>
                 <p>{partner.description}</p>
