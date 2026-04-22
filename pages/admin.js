@@ -14,6 +14,7 @@ const getSupabaseClient = () => {
 }
 
 export const dynamic = 'force-dynamic'
+export const revalidate = false
 
 export async function getServerSideProps() {
   return {
