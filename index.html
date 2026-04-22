@@ -3,7 +3,70 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d2b1a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<meta http-equiv="X-XSS-Protection" content="1; mode=block">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 <title>GreenBin Connect — Freetown's Waste Reporting Platform</title>
+<meta name="description" content="AI-powered waste reporting platform for Sierra Leone. Citizens report hazards via photo, voice, or text. AI analyzes risk levels and alerts authorities.">
+<meta name="keywords" content="waste reporting, Sierra Leone, Freetown, environmental hazards, AI, waste management">
+<meta name="author" content="AfrikSpark Tech Solutions">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="googlebot" content="index, follow">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://greenbin.afrikspark.tech/">
+<meta property="og:title" content="GreenBin Connect — Freetown's Waste Reporting Platform">
+<meta property="og:description" content="AI-powered waste reporting platform for Sierra Leone. Citizens report hazards via photo, voice, or text. AI analyzes risk levels and alerts authorities.">
+<meta property="og:image" content="https://greenbin.afrikspark.tech/logo.jpeg">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://greenbin.afrikspark.tech/">
+<meta property="twitter:title" content="GreenBin Connect — Freetown's Waste Reporting Platform">
+<meta property="twitter:description" content="AI-powered waste reporting platform for Sierra Leone. Citizens report hazards via photo, voice, or text. AI analyzes risk levels and alerts authorities.">
+<meta property="twitter:image" content="https://greenbin.afrikspark.tech/logo.jpeg">
+
+<!-- Canonical URL -->
+<link rel="canonical" href="https://greenbin.afrikspark.tech/">
+
+<!-- Favicon -->
+<link rel="icon" type="image/jpeg" href="logo.jpeg">
+<link rel="apple-touch-icon" href="logo.jpeg">
+
+<!-- Preload critical resources -->
+<link rel="preload" href="logo.jpeg" as="image">
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="dns-prefetch" href="//kbkegtethadwpgjjujhg.supabase.co">
+
+<!-- Structured Data for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "GreenBin Connect",
+  "description": "AI-powered waste reporting platform for Sierra Leone. Citizens report hazards via photo, voice, or text. AI analyzes risk levels and alerts authorities.",
+  "url": "https://greenbin.afrikspark.tech/",
+  "applicationCategory": "EnvironmentalApplication",
+  "operatingSystem": "Android",
+  "author": {
+    "@type": "Organization",
+    "name": "AfrikSpark Tech Solutions",
+    "url": "https://afrikspark.tech"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -313,7 +376,7 @@
 <!-- ── NAV ── -->
 <nav>
   <a class="nav-logo" href="#">
-    <img src="logo.jpeg" alt="GreenBin Connect">
+    <img src="logo.jpeg" alt="GreenBin Connect" loading="eager" />
   </a>
   <ul class="nav-links">
     <li><a href="#problem">The Problem</a></li>
@@ -331,7 +394,7 @@
     <span class="badge-dot"></span>
     Now serving Freetown, Sierra Leone
   </div>
-  <img src="logo.jpeg" alt="GreenBin Connect" class="hero-logo">
+  <img src="logo.jpeg" alt="GreenBin Connect" class="hero-logo" loading="eager" />
   <h1>Cleaner Freetown<br>Starts With <span>You</span></h1>
   <p class="hero-sub">GreenBin Connect collects your waste, tracks environmental hazards, and connects communities to action — powered by AI, built for Freetown.</p>
   <div class="hero-buttons">
@@ -367,8 +430,8 @@
   <div class="slideshow-wrapper">
     <div class="slideshow-track" id="slideshowTrack"></div>
     <div class="slide-arrows">
-      <button class="slide-arrow" onclick="changeSlide(-1)">&#8592;</button>
-      <button class="slide-arrow" onclick="changeSlide(1)">&#8594;</button>
+      <button class="slide-arrow" onclick="changeSlide(-1)" aria-label="Previous slide">&#8592;</button>
+      <button class="slide-arrow" onclick="changeSlide(1)" aria-label="Next slide">&#8594;</button>
     </div>
   </div>
   <div class="slideshow-dots" id="slideshowDots"></div>
@@ -696,7 +759,7 @@
 <footer>
   <div class="footer-inner">
     <div class="footer-logo">
-      <img src="logo.jpeg" alt="GreenBin Connect">
+      <img src="logo.jpeg" alt="GreenBin Connect" loading="eager" />
     </div>
     <p class="credit">A project by <a href="https://afrikspark.tech" target="_blank">AfrikSpark Tech Solutions</a></p>
     <div class="footer-links">
@@ -709,6 +772,9 @@
 </footer>
 
 <script>
+  // SECURITY NOTE: In production, these keys should be stored server-side
+  // and API calls should be made through a backend to avoid exposing credentials
+  // Consider using Supabase Edge Functions or a custom API endpoint
   // ── SUPABASE CONFIG ──
   const SUPABASE_URL = 'https://kbkegtethadwpgjjujhg.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtia2VndGV0aGFkd3Bnamp1amhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3NzgzODksImV4cCI6MjA5MjM1NDM4OX0.wJSkfvgZ60VNLj0u6A5fJSq70R_RcTHh0eTmkcZ93tA';
@@ -1218,7 +1284,7 @@
 <!-- ── NAV ── -->
 <nav>
   <a class="nav-logo" href="#">
-    <img src="logo.jpeg" alt="GreenBin Connect">
+    <img src="logo.jpeg" alt="GreenBin Connect" loading="eager" />
   </a>
   <ul class="nav-links">
     <li><a href="#problem">The Problem</a></li>
@@ -1236,7 +1302,7 @@
     <span class="badge-dot"></span>
     Now serving Freetown, Sierra Leone
   </div>
-  <img src="logo.jpeg" alt="GreenBin Connect" class="hero-logo">
+  <img src="logo.jpeg" alt="GreenBin Connect" class="hero-logo" loading="eager" />
   <h1>Cleaner Freetown<br>Starts With <span>You</span></h1>
   <p class="hero-sub">GreenBin Connect collects your waste, tracks environmental hazards, and connects communities to action — powered by AI, built for Freetown.</p>
   <div class="hero-buttons">
@@ -1272,8 +1338,8 @@
   <div class="slideshow-wrapper">
     <div class="slideshow-track" id="slideshowTrack"></div>
     <div class="slide-arrows">
-      <button class="slide-arrow" onclick="changeSlide(-1)">&#8592;</button>
-      <button class="slide-arrow" onclick="changeSlide(1)">&#8594;</button>
+      <button class="slide-arrow" onclick="changeSlide(-1)" aria-label="Previous slide">&#8592;</button>
+      <button class="slide-arrow" onclick="changeSlide(1)" aria-label="Next slide">&#8594;</button>
     </div>
   </div>
   <div class="slideshow-dots" id="slideshowDots"></div>
@@ -1601,7 +1667,7 @@
 <footer>
   <div class="footer-inner">
     <div class="footer-logo">
-      <img src="logo.jpeg" alt="GreenBin Connect">
+      <img src="logo.jpeg" alt="GreenBin Connect" loading="eager" />
     </div>
     <p class="credit">A project by <a href="https://afrikspark.tech" target="_blank">AfrikSpark Tech Solutions</a></p>
     <div class="footer-links">
@@ -1614,6 +1680,9 @@
 </footer>
 
 <script>
+  // SECURITY NOTE: In production, these keys should be stored server-side
+  // and API calls should be made through a backend to avoid exposing credentials
+  // Consider using Supabase Edge Functions or a custom API endpoint
   // ── SUPABASE CONFIG ──
   const SUPABASE_URL = 'https://kbkegtethadwpgjjujhg.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtia2VndGV0aGFkd3Bnamp1amhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3NzgzODksImV4cCI6MjA5MjM1NDM4OX0.wJSkfvgZ60VNLj0u6A5fJSq70R_RcTHh0eTmkcZ93tA';
@@ -1818,3 +1887,9 @@
 </script>
 </body>
 </html>
+
+
+
+
+
+
