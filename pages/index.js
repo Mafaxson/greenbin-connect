@@ -481,6 +481,7 @@ export default function Home() {
             <div className="footer-links">
               <a href="https://github.com/Mafaxson/greenbin-connect" target="_blank">GitHub</a>
               <a href="mailto:info@afrikspark.tech?subject=GreenBin Connect Inquiry">Contact</a>
+              <a href="/privacy-policy">Privacy Policy</a>
               <a href="https://afrikspark.tech" target="_blank">AfrikSpark</a>
             </div>
           </div>
