@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { motion } from 'framer-motion'
@@ -481,7 +482,7 @@ export default function Home() {
             <div className="footer-links">
               <a href="https://github.com/Mafaxson/greenbin-connect" target="_blank">GitHub</a>
               <a href="mailto:info@afrikspark.tech?subject=GreenBin Connect Inquiry">Contact</a>
-              <a href="/privacy-policy">Privacy Policy</a>
+              <Link href="/privacy-policy">Privacy Policy</Link>
               <a href="https://afrikspark.tech" target="_blank">AfrikSpark</a>
             </div>
           </div>
